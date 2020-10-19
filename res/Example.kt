@@ -1,7 +1,3 @@
-fun main() {
-printWeek()
-}
-
 fun printWeek() {
     var userChoose: Int
     do {
@@ -34,5 +30,5 @@ fun printWeek() {
             8 -> return;
             else -> println("try again")
         }
-    }while (true)
+    }   while (true)
 }
