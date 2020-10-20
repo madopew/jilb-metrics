@@ -9,50 +9,60 @@ class Parser {
     int conditionalOperatorsAmount;
     int maxNestingLevel;
     int currentIndex;
+    int currentNestingLevel;
 
     {
         conditionalOperatorsAmount = 0;
         maxNestingLevel = 0;
+        currentNestingLevel = 0;
         currentIndex = 0;
     }
 
     public Parser(ArrayList<Token> tokens) {
         this.tokens = new ArrayList<>(tokens);
-        parseBlock(tokens.size(), 0);
+        parseBlock(tokens.size());
     }
 
-    private void parseBlock(int endIndex, int currentNestingLevel) {
+    private void parseBlock(int endIndex) {
         if(currentNestingLevel > maxNestingLevel)
             maxNestingLevel = currentNestingLevel;
         while(currentIndex < endIndex) {
-            if(tokens.get(currentIndex).value.equals("do")) {
+            if(currentTokenEquals("do")) {
+                currentNestingLevel++;
                 conditionalOperatorsAmount++;
                 currentIndex++;
-                parseBlock(getBracketsEnd("{", "}"), currentNestingLevel + 1);
-            }
-            if(tokens.get(currentIndex).value.equals("else")) {
+                parseBlock(getBracketsEnd("{", "}"));
+            } else if(currentTokenEquals("else")) {
+                currentNestingLevel++;
                 currentIndex++;
-                if(tokens.get(currentIndex).value.equals("{")) {
-                    parseBlock(getBracketsEnd("{", "}"), currentNestingLevel + 1);
+                if(currentTokenEquals("{")) {
+                    parseBlock(getBracketsEnd("{", "}"));
                 } else {
-                    parseBlock(currentIndex + 1, currentNestingLevel + 1);
+                    parseBlock(currentIndex + 1);
+                    currentIndex--;
                 }
-            }
-            if(tokens.get(currentIndex).value.equals("for") ||
-                    tokens.get(currentIndex).value.equals("while") ||
-                    tokens.get(currentIndex).value.equals("if")) {
+            } else if(currentTokenEquals("for") ||
+                    currentTokenEquals("while") ||
+                    currentTokenEquals("if")) {
+                currentNestingLevel++;
                 conditionalOperatorsAmount++;
                 currentIndex++;
                 currentIndex = getBracketsEnd("(", ")");
                 currentIndex++;
-                if(tokens.get(currentIndex).value.equals("{")) {
-                    parseBlock(getBracketsEnd("{", "}"), currentNestingLevel + 1);
+                if(currentTokenEquals("{")) {
+                    parseBlock(getBracketsEnd("{", "}"));
                 } else {
-                    parseBlock(currentIndex + 1, currentNestingLevel + 1);
+                    parseBlock(currentIndex + 1);
+                    currentIndex--;
                 }
             }
             currentIndex++;
         }
+        currentNestingLevel--;
+    }
+
+    private boolean currentTokenEquals(String check) {
+        return tokens.get(currentIndex).value.equals(check);
     }
 
     /**
@@ -72,4 +82,23 @@ class Parser {
         index--;
         return index;
     }
+
+//    private int getIfEnd(int ifIndex) {
+//        int index = ifIndex;
+//        int ifElseAmount = 0;
+//        do {
+//            index++;
+//            switch (tokens.get(index).value) {
+//                case "if":
+//                    ifElseAmount++;
+//                    break;
+//                case "else":
+//                    ifElseAmount--;
+//                    break;
+//                case "{":
+//                    index = getBracketsEnd(index, "{", "}");
+//            }
+//        } while (!tokens.get(index).value.equals("else") || ifElseAmount != 0);
+//        return index;
+//    }
 }

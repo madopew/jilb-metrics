@@ -1,7 +1,9 @@
 fun main() {
-    if(x == 3)
-        x++
-    else if (x == 2)
+    var x = 0
+    x += 3
+    if (x == 3)
+        x += 2
+    else
         if (y == 5)
             x--
         else
