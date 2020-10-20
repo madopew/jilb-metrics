@@ -1,13 +1,14 @@
 package halsteadMetrics;
 
-import lexer.Token;
 import halsteadMetrics.enums.Op;
+import lexer.Token;
 
 import java.util.ArrayList;
 
 public class HalsteadMetricsCondensed {
     public static int getOperatorsAmount(ArrayList<Token> tokens) {
-        ArrayList<ArgumentToken> argTokens = new Parser(tokens).getArgTokens();
+        Parser p = new Parser(tokens);
+        ArrayList<ArgumentToken> argTokens = p.getArgTokens();
         ArrayList<Argument> argOperators = new ArrayList<>();
         int n1 = 0;
         argTokens.forEach(at -> {

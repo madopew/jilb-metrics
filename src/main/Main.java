@@ -1,6 +1,5 @@
 package main;
 
-import halsteadMetrics.HalsteadMetricsCondensed;
 import lexer.Lexer;
 
 import java.io.BufferedReader;
@@ -9,7 +8,7 @@ import java.io.FileReader;
 
 public class Main {
     public static void main(String[] args) {
-        final String fileName = "./res/Test.kt";
+        final String fileName = "./res/Example.kt";
         StringBuilder sb = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new FileReader(new File(fileName)))) {
             String s = br.readLine();

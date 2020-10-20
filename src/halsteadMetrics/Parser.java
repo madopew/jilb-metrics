@@ -1,7 +1,7 @@
 package halsteadMetrics;
 
-import lexer.Token;
 import halsteadMetrics.enums.Op;
+import lexer.Token;
 import lexer.enums.Type;
 
 import java.util.ArrayList;
