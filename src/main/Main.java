@@ -1,5 +1,6 @@
 package main;
 
+import jilbMetrics.JilbMetrics;
 import lexer.Lexer;
 
 import java.io.BufferedReader;
@@ -21,5 +22,7 @@ public class Main {
         }
         Lexer l = new Lexer(sb.toString());
         System.out.println(l);
+        JilbMetrics jm = new JilbMetrics(sb.toString());
+        System.out.println(jm.getMaxNestingLevel());
     }
 }

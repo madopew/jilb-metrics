@@ -14,17 +14,17 @@ public class JilbMetrics {
         jilbParser = new Parser(tokens);
     }
 
-    public int getAbsoluteDifficulty(String rawText) {
+    public int getAbsoluteDifficulty() {
         return jilbParser.conditionalOperatorsAmount;
     }
 
-    public double getRelativeDifficulty(String rawText) {
-        int conditionalOperatorAmount = getAbsoluteDifficulty(rawText);
+    public double getRelativeDifficulty() {
+        int conditionalOperatorAmount = getAbsoluteDifficulty();
         int operatorAmount = HalsteadMetricsCondensed.getOperatorsAmount(tokens);
         return (double) conditionalOperatorAmount / (double) operatorAmount;
     }
 
-    public int getMaxNestingLevel(String rawText) {
+    public int getMaxNestingLevel() {
         return jilbParser.maxNestingLevel;
     }
 }

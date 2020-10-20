@@ -1,7 +1,6 @@
 package jilbMetrics;
 
 import lexer.Token;
-import pair.IntegerPair;
 
 import java.util.ArrayList;
 
@@ -9,21 +8,53 @@ class Parser {
     private final ArrayList<Token> tokens;
     int conditionalOperatorsAmount;
     int maxNestingLevel;
+    int currentIndex;
+
+    {
+        conditionalOperatorsAmount = 0;
+        maxNestingLevel = 0;
+        currentIndex = 0;
+    }
 
     public Parser(ArrayList<Token> tokens) {
         this.tokens = new ArrayList<>(tokens);
-        conditionalOperatorsAmount = 0;
-        maxNestingLevel = 0;
-        parseBlock(findBlockStartEnd(0));
+        parseBlock(tokens.size(), 0);
     }
 
-    private int parseBlock(IntegerPair startEnd) {
-        while(currentIndex < tokens.size()) {
-            if(tokens.get(currentIndex).value.equals("if")) {
-                conditionalOperatorsAmount++;
-                currentIndex = parseBlock(findBlockStartIndex(currentIndex));
+    private void parseBlock(int endIndex, int currentNestingLevel) {
+        if(currentNestingLevel > maxNestingLevel)
+            maxNestingLevel = currentNestingLevel;
+        while(currentIndex < endIndex) {
+            if(tokens.get(currentIndex).value.equals("do")) {
+                currentIndex++;
+                parseBlock(getBracketsEnd("{", "}"), currentNestingLevel + 1);
             }
+            if(tokens.get(currentIndex).value.equals("for")) {
+                currentIndex++;
+                currentIndex = getBracketsEnd("(", ")");
+                currentIndex++;
+                if(tokens.get(currentIndex).value.equals("{")) {
+                    parseBlock(getBracketsEnd("{", "}"), currentNestingLevel + 1);
+                }
+            }
+            currentIndex++;
         }
-        return 0;
+    }
+
+    /**
+     * currentIndex should be at opening bracket of a block/piece of code
+     * @return index of closing bracket of the block/piece of code
+     */
+    private int getBracketsEnd(String openingBracket, String closingBracket) {
+        int index = currentIndex;
+        int bracketsAmount = 0;
+        do {
+            String tokenValue = tokens.get(index++).value;
+            if(tokenValue.equals(openingBracket))
+                bracketsAmount++;
+            else if(tokenValue.equals(closingBracket))
+                bracketsAmount--;
+        } while(bracketsAmount != 0);
+        return index;
     }
 }

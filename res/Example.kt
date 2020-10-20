@@ -1,4 +1,10 @@
 fun printWeek() {
+    for(val i in 1..10) {
+        x++;
+        for(val j in 1..10) {
+            x--;
+        }
+    }
     var userChoose: Int
     do {
         println("hello")
