@@ -29,7 +29,8 @@ class Parser {
         while(currentIndex < endIndex) {
             if(isConditional(tokens.get(currentIndex).value)) {
                 currentNestingLevel++;
-                conditionalOperatorsAmount++;
+                if(!currentTokenEquals("else"))
+                    conditionalOperatorsAmount++;
                 //TODO if-else parsing
                 int blockEnd = getTokenBlockEnd(currentIndex);
                 currentIndex++;
