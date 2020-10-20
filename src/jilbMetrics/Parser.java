@@ -27,16 +27,23 @@ class Parser {
         if(currentNestingLevel > maxNestingLevel)
             maxNestingLevel = currentNestingLevel;
         while(currentIndex < endIndex) {
-            if(currentTokenEquals("do")) {
+            if(isConditional(tokens.get(currentIndex).value)) {
                 currentNestingLevel++;
                 conditionalOperatorsAmount++;
+                //TODO if-else parsing
+                int blockEnd = getTokenBlockEnd(currentIndex);
                 currentIndex++;
-                parseBlock(getBracketsEnd("{", "}"));
+                parseBlock(blockEnd);
+            }
+           /* if(currentTokenEquals("do")) {
+                currentNestingLevel++;
+                conditionalOperatorsAmount++;
+                parseBlock(getOptionalBracketTokenEnd(currentIndex));
             } else if(currentTokenEquals("else")) {
                 currentNestingLevel++;
                 currentIndex++;
                 if(currentTokenEquals("{")) {
-                    parseBlock(getBracketsEnd("{", "}"));
+                    parseBlock(getBracketsEndIndex(currentIndex, "{", "}"));
                 } else {
                     parseBlock(currentIndex + 1);
                     currentIndex--;
@@ -47,58 +54,75 @@ class Parser {
                 currentNestingLevel++;
                 conditionalOperatorsAmount++;
                 currentIndex++;
-                currentIndex = getBracketsEnd("(", ")");
+                currentIndex = getBracketsEndIndex(currentIndex, "(", ")");
                 currentIndex++;
                 if(currentTokenEquals("{")) {
-                    parseBlock(getBracketsEnd("{", "}"));
+                    parseBlock(getBracketsEndIndex(currentIndex, "{", "}"));
                 } else {
                     parseBlock(currentIndex + 1);
                     currentIndex--;
                 }
-            }
+            }*/
             currentIndex++;
         }
         currentNestingLevel--;
     }
 
-    private boolean currentTokenEquals(String check) {
-        return tokens.get(currentIndex).value.equals(check);
+    /**
+     * Returns {@code true} if token value at {@code currentIndex}
+     * equals to {@code checkString}
+     * @param checkString string to compare current token to
+     * @return {@code true} if token equals to string
+     */
+    private boolean currentTokenEquals(String checkString) {
+        return tokens.get(currentIndex).value.equals(checkString);
     }
 
     /**
-     * currentIndex should be at opening bracket of a block/piece of code
+     * Returns index of corresponding closing bracket.
+     * {@code openingBracketIndex} should be at opening bracket of a block/piece of code.
      * @return index of closing bracket of the block/piece of code
      */
-    private int getBracketsEnd(String openingBracket, String closingBracket) {
-        int index = currentIndex;
+    private int getBracketsEndIndex(int openingBracketIndex, String openingBracket, String closingBracket) {
         int bracketsAmount = 0;
         do {
-            String tokenValue = tokens.get(index++).value;
+            String tokenValue = tokens.get(openingBracketIndex++).value;
             if(tokenValue.equals(openingBracket))
                 bracketsAmount++;
             else if(tokenValue.equals(closingBracket))
                 bracketsAmount--;
         } while(bracketsAmount != 0);
-        index--;
-        return index;
+        openingBracketIndex--;
+        return openingBracketIndex;
     }
 
-//    private int getIfEnd(int ifIndex) {
-//        int index = ifIndex;
-//        int ifElseAmount = 0;
-//        do {
-//            index++;
-//            switch (tokens.get(index).value) {
-//                case "if":
-//                    ifElseAmount++;
-//                    break;
-//                case "else":
-//                    ifElseAmount--;
-//                    break;
-//                case "{":
-//                    index = getBracketsEnd(index, "{", "}");
-//            }
-//        } while (!tokens.get(index).value.equals("else") || ifElseAmount != 0);
-//        return index;
-//    }
+    /**
+     * Returns {@code true} if token is conditional
+     * @param token token to check
+     * @return {@code true} if token is conditional
+     */
+    private boolean isConditional(String token) {
+        return " if else for do while ".contains(" " + token + " ");
+    }
+
+    /**
+     * Returns index of the end of a block of a specified token.
+     * @param tokenIndex token to find end of
+     * @return index of the end of a block
+     */
+    private int getTokenBlockEnd(int tokenIndex) {
+        tokenIndex++;
+        if(tokens.get(tokenIndex).value.equals("(")) {
+            tokenIndex = getBracketsEndIndex(tokenIndex, "(", ")");
+            tokenIndex++;
+        }
+        if(!tokens.get(tokenIndex).value.equals("{"))
+            return getOptionalBracketTokenEnd(tokenIndex);
+        return getBracketsEndIndex(tokenIndex, "{", "}");
+    }
+    private int getOptionalBracketTokenEnd(int tokenIndex) {
+        if(isConditional(tokens.get(tokenIndex).value))
+            return getTokenBlockEnd(tokenIndex);
+        return ++tokenIndex;
+    }
 }
