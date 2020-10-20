@@ -30,6 +30,14 @@ class Parser {
                 currentIndex++;
                 parseBlock(getBracketsEnd("{", "}"), currentNestingLevel + 1);
             }
+            if(tokens.get(currentIndex).value.equals("else")) {
+                currentIndex++;
+                if(tokens.get(currentIndex).value.equals("{")) {
+                    parseBlock(getBracketsEnd("{", "}"), currentNestingLevel + 1);
+                } else {
+                    parseBlock(currentIndex + 1, currentNestingLevel + 1);
+                }
+            }
             if(tokens.get(currentIndex).value.equals("for") ||
                     tokens.get(currentIndex).value.equals("while") ||
                     tokens.get(currentIndex).value.equals("if")) {
