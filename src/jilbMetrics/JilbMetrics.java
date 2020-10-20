@@ -18,10 +18,13 @@ public class JilbMetrics {
         return jilbParser.conditionalOperatorsAmount;
     }
 
+    public int getTotalOperatorAmount() {
+        return HalsteadMetricsCondensed.getOperatorsAmount(tokens);
+    }
+
     public double getRelativeDifficulty() {
         int conditionalOperatorAmount = getAbsoluteDifficulty();
-        int operatorAmount = HalsteadMetricsCondensed.getOperatorsAmount(tokens);
-        return (double) conditionalOperatorAmount / (double) operatorAmount;
+        return (double) conditionalOperatorAmount / getTotalOperatorAmount();
     }
 
     public int getMaxNestingLevel() {

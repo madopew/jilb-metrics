@@ -26,15 +26,19 @@ class Parser {
             maxNestingLevel = currentNestingLevel;
         while(currentIndex < endIndex) {
             if(tokens.get(currentIndex).value.equals("do")) {
+                conditionalOperatorsAmount++;
                 currentIndex++;
                 parseBlock(getBracketsEnd("{", "}"), currentNestingLevel + 1);
             }
             if(tokens.get(currentIndex).value.equals("for")) {
+                conditionalOperatorsAmount++;
                 currentIndex++;
                 currentIndex = getBracketsEnd("(", ")");
                 currentIndex++;
                 if(tokens.get(currentIndex).value.equals("{")) {
                     parseBlock(getBracketsEnd("{", "}"), currentNestingLevel + 1);
+                } else {
+                    parseBlock(currentIndex + 1, currentNestingLevel + 1);
                 }
             }
             currentIndex++;
@@ -55,6 +59,7 @@ class Parser {
             else if(tokenValue.equals(closingBracket))
                 bracketsAmount--;
         } while(bracketsAmount != 0);
+        index--;
         return index;
     }
 }

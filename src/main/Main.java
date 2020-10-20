@@ -1,5 +1,6 @@
 package main;
 
+import halsteadMetrics.HalsteadMetricsCondensed;
 import jilbMetrics.JilbMetrics;
 import lexer.Lexer;
 
@@ -20,9 +21,13 @@ public class Main {
         } catch (Exception e) {
             System.err.println("File error");
         }
-        Lexer l = new Lexer(sb.toString());
-        System.out.println(l);
+        //Lexer l = new Lexer(sb.toString());
+        //System.out.println(l);
         JilbMetrics jm = new JilbMetrics(sb.toString());
-        System.out.println(jm.getMaxNestingLevel());
+        System.out.printf("Absolute: %d\nRelative: %.3f (Total amount: %d)\nNesting: %d\n",
+                jm.getAbsoluteDifficulty(),
+                jm.getRelativeDifficulty(),
+                jm.getTotalOperatorAmount(),
+                jm.getMaxNestingLevel());
     }
 }
