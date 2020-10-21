@@ -6,67 +6,49 @@ import java.util.ArrayList;
 
 class Parser {
     private final ArrayList<Token> tokens;
+    private int currentIndex;
     int conditionalOperatorsAmount;
     int maxNestingLevel;
-    int currentIndex;
-    int currentNestingLevel;
 
     {
         conditionalOperatorsAmount = 0;
         maxNestingLevel = 0;
-        currentNestingLevel = 0;
         currentIndex = 0;
     }
 
     public Parser(ArrayList<Token> tokens) {
-        this.tokens = new ArrayList<>(tokens);
-        parseBlock(tokens.size());
+        this.tokens = DanglingElseParser.handleDanglingElse(tokens);
+        parseBlock(this.tokens.size(), 0);
     }
 
-    private void parseBlock(int endIndex) {
+    private void parseBlock(int endIndex, int currentNestingLevel) {
         if(currentNestingLevel > maxNestingLevel)
             maxNestingLevel = currentNestingLevel;
         while(currentIndex < endIndex) {
-            if(isConditional(tokens.get(currentIndex).value)) {
-                currentNestingLevel++;
+            if(currentTokenEquals("when")) {
+                //TODO when handling
+            } else if(ParserHelper.isConditional(tokens.get(currentIndex).value)) {
                 if(!currentTokenEquals("else"))
                     conditionalOperatorsAmount++;
-                //TODO if-else parsing
                 int blockEnd = getTokenBlockEnd(currentIndex);
                 currentIndex++;
-                parseBlock(blockEnd);
+                parseBlock(blockEnd, currentNestingLevel + 1);
+                continue;
             }
-           /* if(currentTokenEquals("do")) {
-                currentNestingLevel++;
-                conditionalOperatorsAmount++;
-                parseBlock(getOptionalBracketTokenEnd(currentIndex));
-            } else if(currentTokenEquals("else")) {
-                currentNestingLevel++;
-                currentIndex++;
-                if(currentTokenEquals("{")) {
-                    parseBlock(getBracketsEndIndex(currentIndex, "{", "}"));
-                } else {
-                    parseBlock(currentIndex + 1);
-                    currentIndex--;
-                }
-            } else if(currentTokenEquals("for") ||
-                    currentTokenEquals("while") ||
-                    currentTokenEquals("if")) {
-                currentNestingLevel++;
-                conditionalOperatorsAmount++;
-                currentIndex++;
-                currentIndex = getBracketsEndIndex(currentIndex, "(", ")");
-                currentIndex++;
-                if(currentTokenEquals("{")) {
-                    parseBlock(getBracketsEndIndex(currentIndex, "{", "}"));
-                } else {
-                    parseBlock(currentIndex + 1);
-                    currentIndex--;
-                }
-            }*/
             currentIndex++;
         }
-        currentNestingLevel--;
+    }
+
+    /**
+     * Returns index of corresponding closing bracket.
+     * {@code openingBracketIndex} should be at opening bracket of a block/piece of code.
+     * @param openingBracketIndex index of bracket, which corresponding bracket should be found
+     * @param openingBracket opening bracket of a type
+     * @param closingBracket closing bracket of a type
+     * @return index of closing bracket of the block/piece of code
+     */
+    int getBracketsEndIndex(int openingBracketIndex, String openingBracket, String closingBracket) {
+        return ParserHelper.getBracketsEndIndex(tokens, openingBracketIndex, openingBracket, closingBracket, 1);
     }
 
     /**
@@ -80,33 +62,6 @@ class Parser {
     }
 
     /**
-     * Returns index of corresponding closing bracket.
-     * {@code openingBracketIndex} should be at opening bracket of a block/piece of code.
-     * @return index of closing bracket of the block/piece of code
-     */
-    private int getBracketsEndIndex(int openingBracketIndex, String openingBracket, String closingBracket) {
-        int bracketsAmount = 0;
-        do {
-            String tokenValue = tokens.get(openingBracketIndex++).value;
-            if(tokenValue.equals(openingBracket))
-                bracketsAmount++;
-            else if(tokenValue.equals(closingBracket))
-                bracketsAmount--;
-        } while(bracketsAmount != 0);
-        openingBracketIndex--;
-        return openingBracketIndex;
-    }
-
-    /**
-     * Returns {@code true} if token is conditional
-     * @param token token to check
-     * @return {@code true} if token is conditional
-     */
-    private boolean isConditional(String token) {
-        return " if else for do while ".contains(" " + token + " ");
-    }
-
-    /**
      * Returns index of the end of a block of a specified token.
      * @param tokenIndex token to find end of
      * @return index of the end of a block
@@ -117,13 +72,22 @@ class Parser {
             tokenIndex = getBracketsEndIndex(tokenIndex, "(", ")");
             tokenIndex++;
         }
-        if(!tokens.get(tokenIndex).value.equals("{"))
+        if(!tokens.get(tokenIndex).value.equals("{")) {
             return getOptionalBracketTokenEnd(tokenIndex);
+        }
         return getBracketsEndIndex(tokenIndex, "{", "}");
     }
     private int getOptionalBracketTokenEnd(int tokenIndex) {
-        if(isConditional(tokens.get(tokenIndex).value))
+        if(tokens.get(tokenIndex).value.equals("if"))
+            return getWholeIfBlockEnd(tokenIndex);
+        if(ParserHelper.isConditional(tokens.get(tokenIndex).value))
             return getTokenBlockEnd(tokenIndex);
         return ++tokenIndex;
+    }
+    private int getWholeIfBlockEnd(int ifIndex) {
+        ifIndex = getTokenBlockEnd(ifIndex);
+        if(tokens.get(ifIndex + 1).value.equals("else"))
+            return getTokenBlockEnd(ifIndex + 1);
+        return ifIndex;
     }
 }

@@ -1,8 +1,6 @@
 package main;
 
-import halsteadMetrics.HalsteadMetricsCondensed;
 import jilbMetrics.JilbMetrics;
-import lexer.Lexer;
 
 import java.io.BufferedReader;
 import java.io.File;
