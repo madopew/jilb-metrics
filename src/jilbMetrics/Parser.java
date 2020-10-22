@@ -32,7 +32,7 @@ class Parser {
         updateMaxNestingLevel(currentNestingLevel);
         while(currentIndex < endIndex) {
             String currentToken = tokens.get(currentIndex).value;
-            if(ParserHelper.isConditional(currentToken)) {
+            if(ParserHelper.isConditional(tokens, currentIndex)) {
                 updateConditionalOperatorAmount(currentToken);
                 int blockEnd = getTokenBlockEnd(currentIndex);
                 currentIndex++;
@@ -118,7 +118,7 @@ class Parser {
     private int getOptionalBracketTokenEnd(int tokenIndex) {
         if(tokens.get(tokenIndex).value.equals("if"))
             return getWholeIfBlockEnd(tokenIndex);
-        if(ParserHelper.isConditional(tokens.get(tokenIndex).value))
+        if(ParserHelper.isConditional(tokens, tokenIndex))
             return getTokenBlockEnd(tokenIndex);
         return ++tokenIndex;
     }

@@ -36,11 +36,13 @@ public class ParserHelper {
     }
 
     /**
-     * Returns {@code true} if token is conditional
-     * @param token token to check
+     * Returns {@code true} if token at index is conditional
+     * @param tokens list of tokens
+     * @param index index of the token
      * @return {@code true} if token is conditional
      */
-    static boolean isConditional(String token) {
+    static boolean isConditional(ArrayList<Token> tokens, int index) {
+        String token = tokens.get(index).value;
         return " if else for do while when ".contains(" " + token + " ");
     }
 
