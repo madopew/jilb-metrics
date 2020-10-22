@@ -1,5 +1,10 @@
 fun main() {
-    x = rand(0, 4)
+    when(x) {
+        1 -> if(z == p) printl() else p = z
+        2 -> Set.sort(x -> zed)
+        else -> set()
+    }
+   /* x = rand(0, 4)
     do {
         if (x == 0) {
             println('A')
@@ -30,5 +35,5 @@ fun main() {
                         else
                             println("wtf is even going on")
                     }
-    } while(i == 0) //zdoroviy do while
+    } while(i == 0) //zdoroviy do while*/
 }
