@@ -36,10 +36,11 @@ class Parser {
                 updateConditionalOperatorAmount(currentToken);
                 int blockEnd = getTokenBlockEnd(currentIndex);
                 currentIndex++;
-                if(currentToken.equals("when"))
+                if ("when".equals(currentToken))
                     parseWhenBlock(blockEnd, currentNestingLevel);
                 else
                     parseBlock(blockEnd, currentNestingLevel + 1);
+                adjustDoBlock(currentToken);
                 continue;
             }
             currentIndex++;
@@ -48,12 +49,7 @@ class Parser {
     private void parseWhenBlock(int endIndex, int currentNestingLevel) {
         updateMaxNestingLevel(currentNestingLevel);
         while(currentIndex < endIndex) {
-            String currentToken = tokens.get(currentIndex).value;
-            if(currentToken.equals("->")) {
-                if(!ParserHelper.isLambdaInWhen(tokens, currentIndex)) {
-                    currentIndex++;
-                    continue;
-                }
+            if(ParserHelper.isLambdaInWhen(tokens, currentIndex)) {
                 int blockEnd = getTokenBlockEnd(currentIndex);
                 if (!tokens.get(currentIndex - 1).value.equals("else")) {
                     conditionalOperatorsAmount++;
@@ -65,6 +61,10 @@ class Parser {
             }
             currentIndex++;
         }
+    }
+    private void adjustDoBlock(String currentToken) {
+        if(currentToken.equals("do"))
+            currentIndex += 2;
     }
 
     /**

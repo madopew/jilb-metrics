@@ -45,12 +45,14 @@ public class ParserHelper {
     }
 
     /**
-     * Returns {@code true} if lambda corresponds to {@code when}
+     * Returns {@code true} if it's lambda and it corresponds to {@code when}
      * @param tokens list of tokens
      * @param lambdaIndex index of lambda symbol
      * @return {@code true} if lambda corresponds to {@code when}
      */
     static boolean isLambdaInWhen(ArrayList<Token> tokens, int lambdaIndex) {
+        if(!tokens.get(lambdaIndex).value.equals("->"))
+            return false;
         while(!tokens.get(lambdaIndex).value.equals("when")) {
             lambdaIndex--;
             switch (tokens.get(lambdaIndex).value) {
