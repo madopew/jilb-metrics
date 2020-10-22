@@ -8,7 +8,7 @@ import java.io.FileReader;
 
 public class Main {
     public static void main(String[] args) {
-        final String fileName = "./res/Test.kt";
+        final String fileName = "./res/Big.kt";
         StringBuilder sb = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new FileReader(new File(fileName)))) {
             String s = br.readLine();

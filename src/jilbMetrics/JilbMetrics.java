@@ -28,6 +28,6 @@ public class JilbMetrics {
     }
 
     public int getMaxNestingLevel() {
-        return jilbParser.maxNestingLevel;
+        return jilbParser.maxNestingLevel - 1;
     }
 }
