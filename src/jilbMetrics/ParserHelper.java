@@ -41,6 +41,6 @@ public class ParserHelper {
      * @return {@code true} if token is conditional
      */
     static boolean isConditional(String token) {
-        return " if else for do while ".contains(" " + token + " ");
+        return " if else for do while when ".contains(" " + token + " ");
     }
 }

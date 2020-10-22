@@ -21,22 +21,60 @@ class Parser {
         parseBlock(this.tokens.size(), 0);
     }
 
+    /**
+     * Parses single block in curly brackets recursively,
+     * changing global variables {@code maxNestingLevel} and
+     * {@code conditionalOperatorsAmount}
+     * @param endIndex index of the end of the block
+     * @param currentNestingLevel nesting level of a block
+     */
     private void parseBlock(int endIndex, int currentNestingLevel) {
-        if(currentNestingLevel > maxNestingLevel)
-            maxNestingLevel = currentNestingLevel;
+        updateMaxNestingLevel(currentNestingLevel);
         while(currentIndex < endIndex) {
-            if(currentTokenEquals("when")) {
-                //TODO when handling
-            } else if(ParserHelper.isConditional(tokens.get(currentIndex).value)) {
-                if(!currentTokenEquals("else"))
-                    conditionalOperatorsAmount++;
+            String currentToken = tokens.get(currentIndex).value;
+            if(ParserHelper.isConditional(currentToken)) {
+                updateConditionalOperatorAmount(currentToken);
                 int blockEnd = getTokenBlockEnd(currentIndex);
                 currentIndex++;
-                parseBlock(blockEnd, currentNestingLevel + 1);
+                if(currentToken.equals("when"))
+                    parseWhenBlock(blockEnd, currentNestingLevel);
+                else
+                    parseBlock(blockEnd, currentNestingLevel + 1);
                 continue;
             }
             currentIndex++;
         }
+    }
+
+    private void parseWhenBlock(int endIndex, int currentNestingLevel) {
+        updateMaxNestingLevel(currentNestingLevel);
+        while(currentIndex < endIndex) {
+            String currentToken = tokens.get(currentIndex).value;
+            if(currentToken.equals("->")) {
+
+            }
+            currentIndex++;
+        }
+    }
+
+    /**
+     * Updates {@code maxNestingLevel} if {@code nestingLevel} is
+     * higher
+     * @param nestingLevel nestingLevel to check
+     */
+    private void updateMaxNestingLevel(int nestingLevel) {
+        if(nestingLevel > maxNestingLevel)
+            maxNestingLevel = nestingLevel;
+    }
+
+    /**
+     * Updates {@code conditionalOperatorsAmount} if {@code token} is
+     * conditional (except for else and when)
+     * @param token token to check
+     */
+    private void updateConditionalOperatorAmount(String token) {
+        if(!token.equals("else") && !token.equals("when"))
+            conditionalOperatorsAmount++;
     }
 
     /**
@@ -49,16 +87,6 @@ class Parser {
      */
     int getBracketsEndIndex(int openingBracketIndex, String openingBracket, String closingBracket) {
         return ParserHelper.getBracketsEndIndex(tokens, openingBracketIndex, openingBracket, closingBracket, 1);
-    }
-
-    /**
-     * Returns {@code true} if token value at {@code currentIndex}
-     * equals to {@code checkString}
-     * @param checkString string to compare current token to
-     * @return {@code true} if token equals to string
-     */
-    private boolean currentTokenEquals(String checkString) {
-        return tokens.get(currentIndex).value.equals(checkString);
     }
 
     /**
