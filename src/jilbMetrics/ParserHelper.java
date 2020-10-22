@@ -43,4 +43,23 @@ public class ParserHelper {
     static boolean isConditional(String token) {
         return " if else for do while when ".contains(" " + token + " ");
     }
+
+    /**
+     * Returns {@code true} if lambda corresponds to {@code when}
+     * @param tokens list of tokens
+     * @param lambdaIndex index of lambda symbol
+     * @return {@code true} if lambda corresponds to {@code when}
+     */
+    static boolean isLambdaInWhen(ArrayList<Token> tokens, int lambdaIndex) {
+        while(!tokens.get(lambdaIndex).value.equals("when")) {
+            lambdaIndex--;
+            if(tokens.get(lambdaIndex).value.equals(")"))
+                lambdaIndex = getBracketsEndIndex(tokens, lambdaIndex, "(", ")", -1) - 1;
+            if(tokens.get(lambdaIndex).value.equals("}"))
+                lambdaIndex = getBracketsEndIndex(tokens, lambdaIndex, "{", "}", -1) - 1;
+            if(tokens.get(lambdaIndex).value.equals("("))
+                return false;
+        }
+        return true;
+    }
 }
