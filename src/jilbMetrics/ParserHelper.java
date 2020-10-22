@@ -53,12 +53,16 @@ public class ParserHelper {
     static boolean isLambdaInWhen(ArrayList<Token> tokens, int lambdaIndex) {
         while(!tokens.get(lambdaIndex).value.equals("when")) {
             lambdaIndex--;
-            if(tokens.get(lambdaIndex).value.equals(")"))
-                lambdaIndex = getBracketsEndIndex(tokens, lambdaIndex, "(", ")", -1) - 1;
-            if(tokens.get(lambdaIndex).value.equals("}"))
-                lambdaIndex = getBracketsEndIndex(tokens, lambdaIndex, "{", "}", -1) - 1;
-            if(tokens.get(lambdaIndex).value.equals("("))
-                return false;
+            switch (tokens.get(lambdaIndex).value) {
+                case ")":
+                    lambdaIndex = getBracketsEndIndex(tokens, lambdaIndex, "(", ")", -1);
+                    break;
+                case "}":
+                    lambdaIndex = getBracketsEndIndex(tokens, lambdaIndex, "{", "}", -1);
+                    break;
+                case "(":
+                    return false;
+            }
         }
         return true;
     }
