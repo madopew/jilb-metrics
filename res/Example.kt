@@ -1,11 +1,12 @@
 fun printWeek() {
-    for(val i in 1..10)
-        for(val j in 1..10)
+    //for(val i in 1..10)
+        //for(val j in 1..10)
             do {
-                for(val k in 2..5)
-                    x++;
+                x++
             } while(x < 0)
-    var userChoose: Int
+            if(x)
+                println(y)
+    /*var userChoose: Int
     do {
         println("hello")
         userChoose = readLine()
@@ -29,8 +30,8 @@ fun printWeek() {
                     2 -> println("7:x:2")
                 }
             }
-            8 -> return;
+            8 -> return
             else -> println("try again")
         }
-    }   while (true)
+    }   while (true)*/
 }
