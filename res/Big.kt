@@ -246,12 +246,12 @@ fun taylorSin(x: Double): Double {
 }
 
 fun madness() {
-    for(var i in 1..10)
-        for(var j in 1..10)
-            for(var k in 1..10)
-                for(var l in 1..10)
-                    for(var m in 1..10)
-                        for(var n in 1..10) {
+    for(i in 1..10)
+        for(j in 1..10)
+            for(k in 1..10)
+                for(l in 1..10)
+                    for(m in 1..10)
+                        for(n in 1..10) {
                             val num = i + j + k + l + m + n
                             if(num < 50) {
                                 when(num) {
