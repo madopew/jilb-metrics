@@ -35,17 +35,17 @@
                         <Font name="Bodoni MT" size="15.0" />
                     </font>
                 </Text>
-                <Text fx:id="absoluteString" layoutX="90.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Absolute = " wrappingWidth="244.89959716796875">
+                <Text fx:id="absoluteString" layoutX="90.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CL = " wrappingWidth="244.89959716796875">
                     <font>
                         <Font name="Book Antiqua Bold" size="15.0" />
                     </font>
                 </Text>
-                <Text fx:id="relativeString" layoutX="87.0" layoutY="229.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Relative = " wrappingWidth="244.89959716796875">
+                <Text fx:id="relativeString" layoutX="87.0" layoutY="229.0" strokeType="OUTSIDE" strokeWidth="0.0" text="cl = " wrappingWidth="244.89959716796875">
                     <font>
                         <Font name="Book Antiqua Bold" size="15.0" />
                     </font>
                 </Text>
-                <Text fx:id="nestingString" layoutX="86.0" layoutY="291.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nesting level = " wrappingWidth="238.74384117126465">
+                <Text fx:id="nestingString" layoutX="86.0" layoutY="291.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CLI = " wrappingWidth="238.74384117126465">
                     <font>
                         <Font name="Book Antiqua Bold" size="15.0" />
                     </font>

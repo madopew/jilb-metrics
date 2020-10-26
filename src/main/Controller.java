@@ -16,10 +16,10 @@ import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
 
-    final static String ABSOLUTE = "Absolute = ";
-    final static String RELATIVE = "Relative: ";
-    final static String TOTAL_AMOUNT = "Total amount: ";
-    final static String NESTING = "Nesting level = ";
+    final static String ABSOLUTE = "CL = ";
+    final static String RELATIVE = "cl = ";
+    final static String TOTAL_AMOUNT = "Total amount = ";
+    final static String NESTING = "CLI = ";
 
     @FXML
     private Text absoluteString;
@@ -48,7 +48,7 @@ public class Controller implements Initializable {
     private void aboutProgram(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About program");
-        alert.setContentText("This program shows halstead metrics for a program written in Kotlin");
+        alert.setContentText("This program shows Jilb metrics for a program written in Kotlin");
         alert.setHeaderText(null);
         alert.showAndWait();
     }
@@ -72,7 +72,7 @@ public class Controller implements Initializable {
             JilbMetrics jilbMetrics = new JilbMetrics(sb.toString());
             getAbsoluteString().setText(ABSOLUTE + jilbMetrics.getAbsoluteDifficulty());
             getNestingString().setText(NESTING + jilbMetrics.getMaxNestingLevel());
-            getRelativeString().setText(RELATIVE + jilbMetrics.getRelativeDifficulty() + " (" + TOTAL_AMOUNT + jilbMetrics.getTotalOperatorAmount() + ")");
+            getRelativeString().setText(RELATIVE + String.format("%.2f", jilbMetrics.getRelativeDifficulty()) + " (" + TOTAL_AMOUNT + jilbMetrics.getTotalOperatorAmount() + ")");
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error file");
