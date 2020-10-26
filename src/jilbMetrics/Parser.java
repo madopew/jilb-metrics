@@ -18,58 +18,22 @@ class Parser {
 
     public Parser(ArrayList<Token> tokens) {
         this.tokens = DanglingElseParser.handleDanglingElse(tokens);
-        //parseBlock(this.tokens.size(), 0);
-        parse(this.tokens.size(), 0, ParserHelper::isConditional, this::prepareBlock);
+        parseBlock(this.tokens.size(), 0);
     }
 
-    @FunctionalInterface
-    private interface BlockProcessingCondition {
-        boolean verify(ArrayList<Token> tokens, int currentIndex);
-    }
-
-    @FunctionalInterface
-    private interface BlockProcessingPreparation {
-        int prepare(int currentIndex, int currentNestingLevel);
-    }
-
-    private void parse(int endIndex, int currentNestingLevel,
-                       BlockProcessingCondition bpc, BlockProcessingPreparation bpp) {
-        updateMaxNestingLevel(currentNestingLevel);
-        while(currentIndex < endIndex) {
-            String currentToken = tokens.get(currentIndex).value;
-            if(bpc.verify(tokens, currentIndex)) {
-                currentNestingLevel = bpp.prepare(currentIndex, currentNestingLevel);
-                int blockEnd = getTokenBlockEnd(currentIndex);
-                currentIndex++;
-                if (currentToken.equals("when")) {
-                    parse(blockEnd, currentNestingLevel, ParserHelper::isLambdaInWhen, this::prepareWhen);
-                } else {
-                    parse(blockEnd, currentNestingLevel, ParserHelper::isConditional, this::prepareBlock);
-                    adjustDoBlock(currentToken);
-                }
-                continue;
-            }
-            currentIndex++;
-        }
-    }
-    private void adjustDoBlock(String currentToken) {
-        if(currentToken.equals("do"))
-            currentIndex += 2;
-    }
-
-    /*
+    /**
      * Parses single block in curly brackets recursively,
      * changing global variables {@code maxNestingLevel} and
      * {@code conditionalOperatorsAmount}
      * @param endIndex index of the end of the block
      * @param currentNestingLevel nesting level of a block
      */
-   /* private void parseBlock(int endIndex, int currentNestingLevel) {
+    private void parseBlock(int endIndex, int currentNestingLevel) {
         updateMaxNestingLevel(currentNestingLevel);
         while(currentIndex < endIndex) {
             String currentToken = tokens.get(currentIndex).value;
             if(ParserHelper.isConditional(tokens, currentIndex)) {
-                updateConditionalOperatorAmount(currentIndex);
+                updateConditionalOperatorAmount(currentToken);
                 int blockEnd = getTokenBlockEnd(currentIndex);
                 currentIndex++;
                 if ("when".equals(currentToken))
@@ -86,18 +50,22 @@ class Parser {
         updateMaxNestingLevel(currentNestingLevel);
         while(currentIndex < endIndex) {
             if(ParserHelper.isLambdaInWhen(tokens, currentIndex)) {
+                int blockEnd = getTokenBlockEnd(currentIndex);
                 if (!tokens.get(currentIndex - 1).value.equals("else")) {
                     conditionalOperatorsAmount++;
                     currentNestingLevel++;
                 }
-                int blockEnd = getTokenBlockEnd(currentIndex);
                 currentIndex++;
                 parseBlock(blockEnd, currentNestingLevel);
                 continue;
             }
             currentIndex++;
         }
-    }*/
+    }
+    private void adjustDoBlock(String currentToken) {
+        if(currentToken.equals("do"))
+            currentIndex += 2;
+    }
 
     /**
      * Updates {@code maxNestingLevel} if {@code nestingLevel} is
@@ -110,24 +78,13 @@ class Parser {
     }
 
     /**
-     * Updates {@code conditionalOperatorsAmount} if token at {@code index} is
+     * Updates {@code conditionalOperatorsAmount} if {@code token} is
      * conditional (except for else and when)
-     * @param index index of token to check
+     * @param token token to check
      */
-    private int prepareBlock(int index, int currentNestingLevel) {
-        String token = tokens.get(index).value;
+    private void updateConditionalOperatorAmount(String token) {
         if(!token.equals("else") && !token.equals("when"))
             conditionalOperatorsAmount++;
-        if(!token.equals("when"))
-            currentNestingLevel++;
-        return currentNestingLevel;
-    }
-    private int prepareWhen(int index, int currentNestingLevel) {
-        if (!tokens.get(index - 1).value.equals("else")) {
-            conditionalOperatorsAmount++;
-            currentNestingLevel++;
-        }
-        return currentNestingLevel;
     }
 
     /**
