@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.*?>
+<VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="711.0" prefWidth="741.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Controller">
+    <children>
+        <MenuBar minWidth="-Infinity" prefHeight="700.0" prefWidth="700.0" VBox.vgrow="NEVER">
+            <menus>
+                <Menu mnemonicParsing="false" text="File">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#openFile" text="Open file" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" onAction="#exitAction" text="Exit" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#aboutProgram" text="About program" />
+                        <MenuItem mnemonicParsing="false" onAction="#aboutDevelopers" text="About developers" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+        <AnchorPane maxHeight="-1.0" maxWidth="-1.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="705.0" prefWidth="927.0" VBox.vgrow="ALWAYS">
+            <children>
+                <Text layoutX="305.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Jilb metric" wrappingWidth="196.72271728515625">
+                    <font>
+                        <Font name="Bodoni MT Bold" size="28.0" />
+                    </font>
+                </Text>
+                <Text layoutX="282.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="for a program writen in Kotlin" wrappingWidth="178.72265625">
+                    <font>
+                        <Font name="Bodoni MT" size="15.0" />
+                    </font>
+                </Text>
+                <Text fx:id="absoluteString" layoutX="90.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Absolute = " wrappingWidth="244.89959716796875">
+                    <font>
+                        <Font name="Book Antiqua Bold" size="15.0" />
+                    </font>
+                </Text>
+                <Text fx:id="relativeString" layoutX="87.0" layoutY="229.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Relative = " wrappingWidth="244.89959716796875">
+                    <font>
+                        <Font name="Book Antiqua Bold" size="15.0" />
+                    </font>
+                </Text>
+                <Text fx:id="nestingString" layoutX="86.0" layoutY="291.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nesting level = " wrappingWidth="238.74384117126465">
+                    <font>
+                        <Font name="Book Antiqua Bold" size="15.0" />
+                    </font>
+                </Text>
+            </children>
+        </AnchorPane>
+    </children>
+</VBox>

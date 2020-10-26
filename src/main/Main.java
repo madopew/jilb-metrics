@@ -1,31 +1,28 @@
 package main;
 
-import jilbMetrics.JilbMetrics;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+    public class Main extends Application {
+        private static Stage mainStage;
 
-public class Main {
-    public static void main(String[] args) {
-        final String fileName = "./res/Small.kt";
-        StringBuilder sb = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(new FileReader(new File(fileName)))) {
-            String s = br.readLine();
-            while(s != null) {
-                sb.append(s).append("\n");
-                s = br.readLine();
-            }
-        } catch (Exception e) {
-            System.err.println("File error");
+        @Override
+        public void start(Stage primaryStage) throws Exception{
+            Parent root = FXMLLoader.load(getClass().getResource("Halstead metric.fxml"));
+            primaryStage.setTitle("Halstead metric");
+            primaryStage.setScene(new Scene(root));
+            primaryStage.show();
+            mainStage = primaryStage;
         }
-        //Lexer l = new Lexer(sb.toString());
-        //System.out.println(l);
-        JilbMetrics jm = new JilbMetrics(sb.toString());
-        System.out.printf("Absolute: %d\nRelative: %.3f (Total amount: %d)\nNesting: %d\n",
-                jm.getAbsoluteDifficulty(),
-                jm.getRelativeDifficulty(),
-                jm.getTotalOperatorAmount(),
-                jm.getMaxNestingLevel());
+
+        public static Stage getStage() {
+            return mainStage;
+        }
+
+        public static void main(String[] args) {
+            launch(args);
+        }
     }
-}
