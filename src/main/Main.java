@@ -11,8 +11,8 @@ import javafx.stage.Stage;
 
         @Override
         public void start(Stage primaryStage) throws Exception{
-            Parent root = FXMLLoader.load(getClass().getResource("Halstead metric.fxml"));
-            primaryStage.setTitle("Halstead metric");
+            Parent root = FXMLLoader.load(getClass().getResource("Jilb metrics.fxml"));
+            primaryStage.setTitle("Jilb metrics");
             primaryStage.setScene(new Scene(root));
             primaryStage.show();
             mainStage = primaryStage;
