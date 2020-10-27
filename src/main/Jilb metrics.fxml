@@ -25,7 +25,7 @@
         </MenuBar>
         <AnchorPane maxHeight="-1.0" maxWidth="-1.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="705.0" prefWidth="927.0" VBox.vgrow="ALWAYS">
             <children>
-                <Text layoutX="305.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Jilb metric" wrappingWidth="196.72271728515625">
+                <Text layoutX="309.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Jilb metrics" wrappingWidth="196.72271728515625">
                     <font>
                         <Font name="Bodoni MT Bold" size="28.0" />
                     </font>
@@ -35,21 +35,38 @@
                         <Font name="Bodoni MT" size="15.0" />
                     </font>
                 </Text>
-                <Text fx:id="absoluteString" layoutX="90.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CL = " wrappingWidth="244.89959716796875">
+                <TableView fx:id="tableOperator" layoutX="28.0" layoutY="84.0" prefHeight="458.0" prefWidth="345.0">
+                    <columns>
+                        <TableColumn fx:id="j" minWidth="60.0" prefWidth="60.0" text="j" />
+                        <TableColumn fx:id="operator" minWidth="220.0" prefWidth="220.0" text="Operator" />
+                        <TableColumn fx:id="f1j" minWidth="36.800048828125" prefWidth="61.60001220703123" text="f1j" />
+                    </columns>
+                </TableView>
+                <Text fx:id="n1Value" layoutX="661.0" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="244.89959716796875">
                     <font>
                         <Font name="Book Antiqua Bold" size="15.0" />
                     </font>
                 </Text>
-                <Text fx:id="relativeString" layoutX="87.0" layoutY="229.0" strokeType="OUTSIDE" strokeWidth="0.0" text="cl = " wrappingWidth="244.89959716796875">
-                    <font>
-                        <Font name="Book Antiqua Bold" size="15.0" />
-                    </font>
-                </Text>
-                <Text fx:id="nestingString" layoutX="86.0" layoutY="291.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CLI = " wrappingWidth="238.74384117126465">
-                    <font>
-                        <Font name="Book Antiqua Bold" size="15.0" />
-                    </font>
-                </Text>
+            <Text fx:id="CL" layoutX="392.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CL = " wrappingWidth="114.0">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Text>
+            <Text fx:id="cl" layoutX="392.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" text="cl = " wrappingWidth="114.0">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Text>
+            <Text layoutX="547.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total amount = " wrappingWidth="114.0">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Text>
+            <Text fx:id="CLI" layoutX="392.0" layoutY="266.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CLI = " wrappingWidth="114.0">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Text>
             </children>
         </AnchorPane>
     </children>

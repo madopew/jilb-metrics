@@ -1,7 +1,6 @@
 package jilbMetrics;
 
 import halsteadMetrics.HalsteadMetricsCondensed;
-import lexer.Lexer;
 import lexer.Token;
 
 import java.util.ArrayList;
@@ -9,8 +8,17 @@ import java.util.ArrayList;
 public class JilbMetrics {
     Parser jilbParser;
     ArrayList<Token> tokens;
+    HalsteadMetricsCondensed halsteadMetricsCondensed;
+
     public JilbMetrics(String rawText) {
-        tokens = new Lexer(rawText).getTokens();
+        halsteadMetricsCondensed = new HalsteadMetricsCondensed(rawText);
+        tokens = halsteadMetricsCondensed.getTokens();
+        jilbParser = new Parser(tokens);
+    }
+
+    public JilbMetrics(HalsteadMetricsCondensed hmc) {
+        this.halsteadMetricsCondensed = hmc;
+        tokens = hmc.getTokens();
         jilbParser = new Parser(tokens);
     }
 
@@ -19,7 +27,7 @@ public class JilbMetrics {
     }
 
     public int getTotalOperatorAmount() {
-        return HalsteadMetricsCondensed.getOperatorsAmount(tokens);
+        return halsteadMetricsCondensed.getOperatorsAmount();
     }
 
     public double getRelativeDifficulty() {
